@@ -1,7 +1,5 @@
 import React from 'react';
-//import { Component } from 'react';
 import './App.css';
-
 
 const data = [
   {
@@ -33,18 +31,28 @@ const data = [
 
 class App extends React.Component {
 
+  constructor(props){
+    super(props)
+     this.state = {value: null}
+
+   }
+
+  updateSelection = (event) => {
+    
+    this.setState({Model: event.target.value})  
+    console.log(this.state)
+}
+
    render() {
-    console.log(data)
-    console.log(Object(data))
     return (
       <div className="App">
 
-        <select>
+        <select value={this.state.value} onChange={this.updateSelection} >
           <option value="">-- pick a model --</option>
           {data.map(model => 
             <option value={model.name}>{`${model.name} (${model.year})`}</option>)}
         </select>
-            
+
       </div>
     );
   }
