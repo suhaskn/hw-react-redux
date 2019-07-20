@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import { connect } from 'react-redux'
+import { addModel } from './actions/models'
 
 const data = [
   {
@@ -31,31 +33,33 @@ const data = [
 
 class App extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
-     this.state = {value: null}
+    this.state = { selectOption: '' }
 
-   }
+  }
 
   updateSelection = (event) => {
-    
-    this.setState({Model: event.target.value})  
-    console.log(this.state)
-}
+    this.setState({ selectedOption: event.target.value })
+  }
 
-   render() {
+  handleButton = () => {
+    const model = data.filter((value) => { return value.name === this.state.selectedOption })
+    this.props.addModel(model[0])
+  }
+
+  render() {
     return (
       <div className="App">
-
         <select value={this.state.value} onChange={this.updateSelection} >
           <option value="">-- pick a model --</option>
-          {data.map(model => 
-            <option value={model.name}>{`${model.name} (${model.year})`}</option>)}
+          {data.map(model =>
+            <option key={model.name} value={model.name}>{`${model.name} (${model.year})`}</option>)}
         </select>
-
+        <button onClick={() => this.handleButton()}>Add</button>
       </div>
     );
   }
 }
 
-export default App;
+export default connect(null,{addModel})(App);
